@@ -1,0 +1,42 @@
+# Changelog
+
+Reverse-chronological. One bullet per user-visible or developer-visible change.
+
+## Unreleased
+
+- Initial scaffold with pinned dependency versions:
+  - `next@16.2.4`, `react@19.2.5`, `react-dom@19.2.5`
+  - `typescript@6.0.3`, `@types/node@25.6.0`, `@types/react@19.2.14`,
+    `@types/react-dom@19.2.3`
+  - `tailwindcss@4.2.4`, `@tailwindcss/postcss@4.2.4`, `postcss@8.5.14`,
+    `autoprefixer@10.5.0`
+  - `eslint@9.39.4`, `eslint-config-next@16.2.4` — eslint pinned to 9.x because
+    `eslint-plugin-react@7.37.x` is not yet compatible with the ESLint 10 rule
+    context API. Bump to 10.x once the plugin ships a fix.
+  - `@anthropic-ai/sdk@0.94.0`
+  - `@supabase/supabase-js@2.105.3`, `@supabase/ssr@0.10.2`
+  - `stripe@22.1.0`
+  - `papaparse@5.5.3`, `@types/papaparse@5.5.2`, `xlsx@0.18.5`
+  - `zod@4.4.3`, `resend@6.12.2`, `lucide-react@1.14.0`
+  - `clsx@2.1.1`, `tailwind-merge@3.5.0`, `class-variance-authority@0.7.1`
+- Added `CLAUDE.md`, `spec.md`, and `docs/` skeleton.
+- Auth: Supabase magic-link sign-in, `/auth/callback` exchange, `proxy.ts`
+  guarding `/app/*` (Next 16 renamed `middleware` → `proxy`).
+- Database: `db/schema.sql` with profiles, policies, questionnaires, questions
+  tables; RLS owner-only on every user table; auto-seed 8 example policies on
+  signup.
+- Policies: CRUD UI at `/app/policies`, REST routes at `/api/policies` and
+  `/api/policies/[id]`.
+- Questionnaires: CSV/XLSX upload with auto-detected question column, plan-aware
+  paywall (402 on limit), SSE draft endpoint with Anthropic prompt caching,
+  review table UI with inline edit + approve, export endpoint that preserves the
+  original layout (with watermark on free plan).
+- AI: `lib/anthropic.ts` uses `claude-sonnet-4-6` with `cache_control: ephemeral`
+  on system + policy blocks; structured JSON output validated by zod with one
+  retry on parse failure.
+- Billing: Stripe Checkout (`/api/stripe/checkout`), Customer Portal
+  (`/api/stripe/portal`), webhook (`/api/stripe/webhook`) with mandatory
+  signature verification syncing `profiles.plan`.
+- Landing page at `/` with pricing for Free, Solo ($99/mo), Team ($399/mo).
+- Sample input: `samples/sample-sig-25.csv`.
+- Setup walkthrough: `SETUP.md`.
