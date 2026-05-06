@@ -1,0 +1,30 @@
+node_modules
+.next
+.vercel
+out
+build
+dist
+
+# env
+.env
+.env.local
+.env.*.local
+
+# logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea
+.vscode
+*.swp
+
+# misc
+*.log
+*.tsbuildinfo
+next-env.d.ts
