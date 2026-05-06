@@ -22,7 +22,7 @@ app/                 Next.js App Router — pages and route handlers
   page.tsx           Public landing page + pricing
 components/          Reusable UI (table, dropzone, pricing table, etc.)
 lib/                 Server/client helpers (supabase, anthropic, stripe, parsers)
-db/                  schema.sql — Postgres schema + RLS policies for Supabase
+supabase/            Local stack config + schema migrations (applied via supabase CLI)
 docs/                Architecture, status, changelog, per-feature docs
 samples/             Demo input data (sample-sig-25.csv)
 spec.md              Product spec (ICP, pricing, scope, non-goals)
@@ -88,9 +88,11 @@ pnpm format       # prettier --write .
 ```
 
 External dev tools (run outside pnpm):
+- `supabase start` — boots the local Supabase stack (Postgres + auth + Studio +
+  Inbucket mailbox). `supabase db reset` re-applies migrations + seed.
+  `supabase status` prints the URL/keys to put in `.env.local`. Hosted projects
+  receive migrations via `supabase db push`.
 - `stripe listen --forward-to localhost:3000/api/stripe/webhook` — webhook forwarding
-- Apply Postgres schema: paste `db/schema.sql` into Supabase SQL editor (or use
-  the Supabase CLI: `supabase db push`).
 
 ## 6. Working on this project
 

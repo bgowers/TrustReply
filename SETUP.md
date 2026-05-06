@@ -10,6 +10,9 @@ Supabase (DB + auth), Anthropic (drafts), Stripe (billing), and optionally Resen
 
 - Node 22 LTS (`node --version`)
 - pnpm (`corepack enable && corepack prepare pnpm@latest --activate`)
+- Docker (Docker Desktop or OrbStack) — required for local Supabase
+- Supabase CLI (`brew install supabase/tap/supabase` or
+  https://supabase.com/docs/guides/cli)
 - Stripe CLI (`brew install stripe/stripe-cli/stripe` or
   https://docs.stripe.com/stripe-cli)
 
@@ -18,22 +21,46 @@ pnpm install
 cp .env.example .env.local
 ```
 
-## 1. Supabase
+## 1. Supabase (local — recommended for dev)
 
-1. Create a free project at https://supabase.com. When prompted, **enable the Data
-   API** with "automatically expose new tables" and "automatic RLS" checked — every
-   table in `db/schema.sql` already declares its own RLS policies, but the default
-   keeps you safe if you ever add a table.
-2. **Settings → Data API**: copy the Project URL into `NEXT_PUBLIC_SUPABASE_URL`.
-3. **Settings → API Keys**: TrustReply uses the new key model (`sb_publishable_…` /
-   `sb_secret_…`), not the legacy anon / service-role JWTs. If you don't see them
-   yet, click "Opt in" — Supabase creates a default publishable key and one secret
-   key. Copy them into `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY`.
-4. **SQL editor**: paste the contents of `db/schema.sql` and run it.
-5. **Authentication → URL Configuration**: set Site URL to `http://localhost:3000`
-   and add `http://localhost:3000/auth/callback` as a redirect URL.
-6. **Authentication → Email**: keep the default Supabase mailer for dev (works
-   without Resend). Magic-link emails arrive in seconds.
+The whole Supabase stack runs locally via Docker — Postgres, GoTrue auth, the
+Studio UI, and Inbucket (a local mailbox that catches magic-link emails). No
+internet required. Schema lives in `supabase/migrations/` and is applied on every
+`supabase db reset`.
+
+```sh
+supabase start
+```
+
+The first run pulls images (a few minutes); subsequent boots are quick. When it's
+done, the CLI prints values for the running stack:
+
+- `API URL` → `NEXT_PUBLIC_SUPABASE_URL`
+- `Publishable key` → `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `Secret key` → `SUPABASE_SECRET_KEY`
+- Studio UI: http://localhost:54323
+- Inbucket (magic-link inbox): http://localhost:54324
+
+Re-print them anytime with `supabase status`.
+
+To wipe and reapply migrations + seed:
+
+```sh
+supabase db reset
+```
+
+Stop the stack with `supabase stop`. Local data is wiped on each reset; that's the
+point.
+
+### Hosted Supabase (staging/prod)
+
+1. Create a project at https://supabase.com.
+2. Link the repo to it: `supabase link --project-ref <ref>`.
+3. Push migrations: `supabase db push`.
+4. Copy the project URL + publishable + secret keys into your hosted env (do not
+   put real cloud secrets in `.env.local`).
+5. Set Auth → URL Config → Site URL to your deployed origin and add
+   `<origin>/auth/callback` as a redirect URL.
 
 ## 2. Anthropic
 

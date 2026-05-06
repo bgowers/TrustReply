@@ -4,6 +4,13 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
 
 ## Unreleased
 
+- Dev workflow: switched primary dev environment to local Supabase via the
+  Supabase CLI. `supabase init` scaffolded `supabase/config.toml`; the schema
+  moved from `db/schema.sql` to `supabase/migrations/20260506000000_initial.sql`
+  so `supabase db reset` applies it deterministically. Magic-link emails now
+  land in the local Inbucket mailbox at `http://localhost:54324`. Hosted
+  Supabase remains supported for staging/prod via `supabase db push`. Updated
+  `SETUP.md`, `CLAUDE.md`, and `docs/architecture.md` accordingly.
 - Tooling: added `vitest@4.1.5` plus unit tests for `lib/parsers.ts`
   (CSV parsing, question-column heuristic, answer-column detection) and
   `lib/exporters.ts` (CSV/XLSX shape, watermark, formula-injection
