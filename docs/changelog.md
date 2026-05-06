@@ -4,6 +4,9 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
 
 ## Unreleased
 
+- Split `components/ui/input.tsx` into `input.tsx` and `textarea.tsx` so each
+  component lives in its own file. Updated import sites in `policy-editor.tsx`
+  and `questionnaire-table.tsx`.
 - Security: neutralize CSV/Excel formula injection (CWE-1236) in
   `lib/exporters.ts`. Cells starting with `=`, `+`, `-`, `@`, tab, or `\r` are
   prefixed with `'` so Excel renders them as text instead of evaluating them.
