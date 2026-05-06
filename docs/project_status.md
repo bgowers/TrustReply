@@ -21,7 +21,8 @@ Updated as milestones complete. Status: `todo` | `in progress` | `done` | `defer
 | 13  | Local typecheck/lint/build green                                      | done   |
 | 14  | Vitest unit tests for parsers + exporters; CI workflow                | done   |
 | 15  | End-to-end smoke against real Supabase/Anthropic/Stripe (manual)      | todo   |
-| 16  | First deploy to Vercel                                                | todo   |
+| 16  | First deploy to Vercel (landing + legal pages, pre-launch)            | in progress |
+| 17  | Footer + Terms / Privacy / Refund pages for Stripe activation         | done   |
 
 ## Known follow-ups
 
