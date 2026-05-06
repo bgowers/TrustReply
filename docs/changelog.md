@@ -4,6 +4,12 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
 
 ## Unreleased
 
+- Tooling: added `vitest@4.1.5` plus unit tests for `lib/parsers.ts`
+  (CSV parsing, question-column heuristic, answer-column detection) and
+  `lib/exporters.ts` (CSV/XLSX shape, watermark, formula-injection
+  neutralization). New `pnpm test` and `pnpm test:watch` scripts. CI runs
+  `typecheck → lint → test → build` via `.github/workflows/ci.yml` on push to
+  `main` and on every PR.
 - Split `components/ui/input.tsx` into `input.tsx` and `textarea.tsx` so each
   component lives in its own file. Updated import sites in `policy-editor.tsx`
   and `questionnaire-table.tsx`.

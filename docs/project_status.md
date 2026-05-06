@@ -19,8 +19,9 @@ Updated as milestones complete. Status: `todo` | `in progress` | `done` | `defer
 | 11  | Landing page with pricing                                             | done   |
 | 12  | `samples/sample-sig-25.csv` + `SETUP.md` + `.env.example`             | done   |
 | 13  | Local typecheck/lint/build green                                      | done   |
-| 14  | End-to-end smoke against real Supabase/Anthropic/Stripe (manual)      | todo   |
-| 15  | First deploy to Vercel                                                | todo   |
+| 14  | Vitest unit tests for parsers + exporters; CI workflow                | done   |
+| 15  | End-to-end smoke against real Supabase/Anthropic/Stripe (manual)      | todo   |
+| 16  | First deploy to Vercel                                                | todo   |
 
 ## Known follow-ups
 
