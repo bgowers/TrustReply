@@ -4,6 +4,11 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
 
 ## Unreleased
 
+- Dev workflow: `pnpm dev` now chains `supabase start && next dev`, so a single
+  command boots the DB + auth + Studio + mail-catcher stack and the Next
+  server. `supabase start` is idempotent so the boot cost is ~2s when the
+  stack is already up. Added `pnpm dev:app` (skips Supabase) and
+  `pnpm db:{start,stop,reset,status}` for explicit control.
 - Dev workflow: switched primary dev environment to local Supabase via the
   Supabase CLI. `supabase init` scaffolded `supabase/config.toml`; the schema
   moved from `db/schema.sql` to `supabase/migrations/20260506000000_initial.sql`

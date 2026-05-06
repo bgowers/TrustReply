@@ -79,20 +79,28 @@ SETUP.md             One-time external setup walkthrough (Supabase, Stripe, Anth
 ## 5. Commands
 
 ```
-pnpm dev          # local dev server on :3000
+pnpm dev          # boots local Supabase stack, then next dev on :3000
+pnpm dev:app      # next dev only (skip supabase start — assumes DB is up)
 pnpm build        # production build
-pnpm start        # production server
+pnpm start        # production server (against hosted Supabase)
+pnpm db:start     # boot local Supabase stack
+pnpm db:stop      # stop local Supabase stack
+pnpm db:reset     # wipe local DB and re-apply migrations + seed
+pnpm db:status    # print local Supabase URL/keys
 pnpm typecheck    # tsc --noEmit
 pnpm lint         # next lint
 pnpm format       # prettier --write .
 ```
 
+`pnpm dev` requires Docker to be running. `supabase start` is idempotent — when
+the stack is already up it returns in ~2s. Containers persist between sessions
+on purpose; restart speed > clean shutdown.
+
 External dev tools (run outside pnpm):
-- `supabase start` — boots the local Supabase stack (Postgres + auth + Studio +
-  Inbucket mailbox). `supabase db reset` re-applies migrations + seed.
-  `supabase status` prints the URL/keys to put in `.env.local`. Hosted projects
-  receive migrations via `supabase db push`.
-- `stripe listen --forward-to localhost:3000/api/stripe/webhook` — webhook forwarding
+- `stripe listen --forward-to localhost:3000/api/stripe/webhook` — webhook
+  forwarding. Run in a second terminal; copy the printed signing secret into
+  `STRIPE_WEBHOOK_SECRET` once.
+- `supabase db push` — apply local migrations to a linked hosted project.
 
 ## 6. Working on this project
 

@@ -92,7 +92,16 @@ skip this — Supabase's built-in mailer works.
 pnpm dev
 ```
 
-Open http://localhost:3000.
+This boots the local Supabase stack (idempotent — fast when already up) and
+then starts Next on :3000. Open http://localhost:3000.
+
+If you'd rather manage the stack yourself: `pnpm dev:app` runs Next without
+touching Supabase. Useful when you've already got the stack up and don't want
+the extra ~2s on every `pnpm dev`. Companion scripts: `pnpm db:start`,
+`pnpm db:stop`, `pnpm db:reset`, `pnpm db:status`.
+
+Containers persist between sessions on purpose. When you're done for the day,
+`pnpm db:stop` shuts them down.
 
 ## 6. End-to-end smoke test
 
