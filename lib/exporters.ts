@@ -18,6 +18,12 @@ export interface ExportInput {
   watermark: boolean;
 }
 
+// Neutralize CSV/Excel formula injection (CWE-1236): cells starting with these
+// characters are evaluated as formulas when the file is opened. Prepending "'"
+// makes Excel treat the cell as text.
+const FORMULA_TRIGGER = /^[=+\-@\t\r]/;
+const safeCell = (v: string): string => (FORMULA_TRIGGER.test(v) ? `'${v}` : v);
+
 export function buildExport(input: ExportInput): { buffer: Buffer; filename: string; contentType: string } {
   const headers = [...input.layoutHeaders];
   const answerColumn = detectAnswerColumn(headers);
@@ -30,8 +36,8 @@ export function buildExport(input: ExportInput): { buffer: Buffer; filename: str
     const q = byRow.get(idx);
     const answer = q?.final_answer ?? q?.draft_answer ?? "";
     const out: Record<string, string> = {};
-    for (const h of headers) out[h] = row[h] ?? "";
-    out[answerColumn] = answer;
+    for (const h of headers) out[h] = safeCell(row[h] ?? "");
+    out[answerColumn] = safeCell(answer);
     return out;
   });
 

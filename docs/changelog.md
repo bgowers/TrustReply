@@ -4,6 +4,10 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
 
 ## Unreleased
 
+- Security: neutralize CSV/Excel formula injection (CWE-1236) in
+  `lib/exporters.ts`. Cells starting with `=`, `+`, `-`, `@`, tab, or `\r` are
+  prefixed with `'` so Excel renders them as text instead of evaluating them.
+  Applies to both CSV and XLSX export paths.
 - Switched Supabase auth to the new API key model: `NEXT_PUBLIC_SUPABASE_ANON_KEY`
   → `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (`sb_publishable_…`) and
   `SUPABASE_SERVICE_ROLE_KEY` → `SUPABASE_SECRET_KEY` (`sb_secret_…`). Updated
