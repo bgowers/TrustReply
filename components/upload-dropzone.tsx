@@ -89,8 +89,8 @@ export function UploadDropzone() {
         <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm">
           <p className="font-medium text-amber-900">{paywall.message}</p>
           <p className="mt-1 text-amber-800">
-            <Link className="underline" href="/#pricing">
-              See plans
+            <Link className="underline" href="/app/billing">
+              View plans &amp; upgrade
             </Link>
           </p>
         </div>

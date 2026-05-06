@@ -26,8 +26,8 @@ Updated as milestones complete. Status: `todo` | `in progress` | `done` | `defer
 
 ## Known follow-ups
 
-- Add a "Manage billing" link in the app header (calls `/api/stripe/portal`).
-- Surface a paywall modal on upload rather than just showing the error inline.
+- Surface a paywall *modal* on upload rather than the inline callout (the
+  callout now links to `/app/billing`, but a modal would feel more direct).
 - Add backfill for `current_period_end` on `customer.subscription.created`
   (today we rely on `checkout.session.completed`).
 - Replace seeded "Replace me" example policies on first edit so the user clears
