@@ -19,7 +19,7 @@ Resolved at scaffold time via `npm view <pkg> version`. Recorded in `changelog.m
 
 ## Data model
 
-Postgres tables (see `db/schema.sql`):
+Postgres tables (see `supabase/migrations/20260506000000_initial.sql`):
 
 - `profiles` — per-user billing state (`plan`, `stripe_customer_id`,
   `stripe_subscription_id`, `current_period_end`). PK is `auth.users.id`.
@@ -110,7 +110,8 @@ re-prompt that includes the error.
 End-to-end check:
 
 1. `pnpm install && pnpm dev`
-2. Apply `db/schema.sql` to a fresh Supabase project.
+2. `supabase start` to boot the local stack; the migration auto-applies. Copy
+   the printed URL + keys into `.env.local`.
 3. Sign in, add 3 policies, upload `samples/sample-sig-25.csv`.
 4. Watch the SSE stream populate the table (<90s for 25 rows).
 5. Edit one answer, click Export, open the XLSX, verify answers in correct column.
