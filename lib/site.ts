@@ -1,7 +1,7 @@
 export const SITE = {
   name: "TrustReply",
-  domain: "trustreply.com",
-  contactEmail: "support@trustreply.com",
+  domain: "trustreply.co.uk",
+  contactEmail: "support@trustreply.co.uk",
   legalEntity: "TrustReply, operated by Ben Gowers, a sole trader based in England & Wales",
   shortLegalEntity: "TrustReply",
   jurisdiction: "England & Wales",

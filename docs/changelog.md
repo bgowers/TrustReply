@@ -14,7 +14,7 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
   jurisdiction / contact / last-updated date are changed in one place.
   Privacy references UK GDPR + ICO; Terms governed by England & Wales.
 - Footer: replaced the one-line copyright in the landing page with a real
-  footer (copyright, `mailto:` to `support@trustreply.com`, links to the
+  footer (copyright, `mailto:` to `support@trustreply.co.uk`, links to the
   three legal pages). Visible on `/` and `/legal/*`.
 - Docs: added `docs/deploy.md` with the Vercel walkthrough, environment
   matrix (local/preview/production), and how to do a landing-only
