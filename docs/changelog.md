@@ -4,6 +4,23 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
 
 ## Unreleased
 
+- Marketing: refactored `app/page.tsx` into an `app/(marketing)/` route group
+  with extracted `<SiteHeader />` and `<SiteFooter />` components. Header/
+  footer now wrap every public page (landing + legal). The dashboard
+  (`/app/*`) and `/login` are unaffected.
+- Legal: added `/legal/terms`, `/legal/privacy`, and `/legal/refund` —
+  plain-English template content for Stripe activation. All three pages,
+  the footer, and the contact email read from a single `lib/site.ts` so
+  jurisdiction / contact / last-updated date are changed in one place.
+  Privacy references UK GDPR + ICO; Terms governed by England & Wales.
+- Footer: replaced the one-line copyright in the landing page with a real
+  footer (copyright, `mailto:` to `support@trustreply.com`, links to the
+  three legal pages). Visible on `/` and `/legal/*`.
+- Docs: added `docs/deploy.md` with the Vercel walkthrough, environment
+  matrix (local/preview/production), and how to do a landing-only
+  pre-launch deploy. Linked from `CLAUDE.md` front-matter and from
+  `docs/features/marketing.md`.
+
 - Fix: disabled `analytics` and `edge_runtime` in `supabase/config.toml` so
   `supabase start` works under Colima. Both services bind-mount the host
   docker socket, which Colima's Linux VM cannot reach (it surfaces as

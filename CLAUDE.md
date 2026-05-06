@@ -9,6 +9,7 @@ get cited draft answers in minutes instead of days.
 - Status & milestones: @docs/project_status.md
 - Changelog: @docs/changelog.md
 - Feature docs: @docs/features/README.md
+- Deploy walkthrough: @docs/deploy.md
 
 ---
 

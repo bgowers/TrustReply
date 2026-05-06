@@ -3,24 +3,7 @@ import { PLANS } from "@/lib/plans";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      <header className="border-b">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <span className="text-sm font-semibold tracking-tight">TrustReply</span>
-          <nav className="flex items-center gap-6 text-sm text-[color:var(--color-muted)]">
-            <a href="#how" className="hover:text-[color:var(--color-fg)]">
-              How it works
-            </a>
-            <a href="#pricing" className="hover:text-[color:var(--color-fg)]">
-              Pricing
-            </a>
-            <Link href="/login" className="font-medium text-[color:var(--color-fg)]">
-              Sign in
-            </Link>
-          </nav>
-        </div>
-      </header>
-
+    <>
       <section className="mx-auto max-w-6xl px-6 py-20">
         <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
           Answer security questionnaires in minutes, not days.
@@ -107,13 +90,7 @@ export default function Home() {
           />
         </div>
       </section>
-
-      <footer className="border-t">
-        <div className="mx-auto max-w-6xl px-6 py-8 text-xs text-[color:var(--color-muted)]">
-          © {new Date().getFullYear()} TrustReply
-        </div>
-      </footer>
-    </div>
+    </>
   );
 }
 
