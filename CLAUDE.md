@@ -51,14 +51,17 @@ SETUP.md             One-time external setup walkthrough (Supabase, Stripe, Anth
 
 - Node **active LTS** (currently 22). pnpm only — no npm/yarn lockfiles.
 - TypeScript **strict** mode. No `any`. Prefer `unknown` + zod parsing at boundaries.
-- Server actions and route handlers only — no client-side service-role keys ever.
+- Server actions and route handlers only — never expose `SUPABASE_SECRET_KEY`
+  (`sb_secret_…`) to the browser. Only `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+  (`sb_publishable_…`) is safe client-side.
 - All Supabase access goes through `lib/supabase/server.ts` (server) or
   `lib/supabase/client.ts` (browser). Never bypass.
 - Anthropic calls always use **prompt caching** on the policy block (`cache_control:
   { type: "ephemeral" }`).
 - **Stripe webhook signature verification is mandatory.** Reject any unsigned event.
 - **RLS is the primary authz boundary**, not API code. Every table has owner-only
-  policies; service-role key is reserved for webhook handlers and server-only flows.
+  policies; the Supabase secret key is reserved for webhook handlers and server-only
+  flows.
 - Dependencies pin to exact versions on initial install (no `^`). Bump deliberately
   with a `docs/changelog.md` entry.
 

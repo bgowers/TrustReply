@@ -13,8 +13,8 @@ export const env = {
 
   supabase: {
     url: () => required("NEXT_PUBLIC_SUPABASE_URL"),
-    anonKey: () => required("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
-    serviceRoleKey: () => required("SUPABASE_SERVICE_ROLE_KEY"),
+    publishableKey: () => required("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY"),
+    secretKey: () => required("SUPABASE_SECRET_KEY"),
   },
 
   anthropic: {

@@ -4,7 +4,7 @@ import { env } from "@/lib/env";
 
 export async function getSupabaseServerClient() {
   const cookieStore = await cookies();
-  return createServerClient(env.supabase.url(), env.supabase.anonKey(), {
+  return createServerClient(env.supabase.url(), env.supabase.publishableKey(), {
     cookies: {
       getAll() {
         return cookieStore.getAll();
@@ -33,7 +33,7 @@ export function getSupabaseServiceClient(): SupabaseClient<any, "public", any> {
   if (!serviceSingleton) {
     serviceSingleton = createServiceClient<any, "public", any>(
       env.supabase.url(),
-      env.supabase.serviceRoleKey(),
+      env.supabase.secretKey(),
       { auth: { persistSession: false } },
     );
   }

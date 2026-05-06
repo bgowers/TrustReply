@@ -20,14 +20,19 @@ cp .env.example .env.local
 
 ## 1. Supabase
 
-1. Create a free project at https://supabase.com.
-2. **Project Settings → API**: copy the Project URL, anon key, and service role key
-   into `.env.local` (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
-   `SUPABASE_SERVICE_ROLE_KEY`).
-3. **SQL editor**: paste the contents of `db/schema.sql` and run it.
-4. **Authentication → URL Configuration**: set Site URL to `http://localhost:3000`
+1. Create a free project at https://supabase.com. When prompted, **enable the Data
+   API** with "automatically expose new tables" and "automatic RLS" checked — every
+   table in `db/schema.sql` already declares its own RLS policies, but the default
+   keeps you safe if you ever add a table.
+2. **Settings → Data API**: copy the Project URL into `NEXT_PUBLIC_SUPABASE_URL`.
+3. **Settings → API Keys**: TrustReply uses the new key model (`sb_publishable_…` /
+   `sb_secret_…`), not the legacy anon / service-role JWTs. If you don't see them
+   yet, click "Opt in" — Supabase creates a default publishable key and one secret
+   key. Copy them into `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY`.
+4. **SQL editor**: paste the contents of `db/schema.sql` and run it.
+5. **Authentication → URL Configuration**: set Site URL to `http://localhost:3000`
    and add `http://localhost:3000/auth/callback` as a redirect URL.
-5. **Authentication → Email**: keep the default Supabase mailer for dev (works
+6. **Authentication → Email**: keep the default Supabase mailer for dev (works
    without Resend). Magic-link emails arrive in seconds.
 
 ## 2. Anthropic

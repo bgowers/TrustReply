@@ -30,9 +30,10 @@ Postgres tables (see `db/schema.sql`):
   `question_text`, `draft_answer`, `final_answer`, `citations` (jsonb),
   `confidence`, `status` (`pending` | `drafted` | `approved`).
 
-Every table has a row-level security policy: `user_id = auth.uid()`. The service
-role key is only used in `/api/stripe/webhook` (no user session) and in code paths
-that explicitly need to bypass RLS for system writes.
+Every table has a row-level security policy: `user_id = auth.uid()`. The Supabase
+secret key (`SUPABASE_SECRET_KEY`, `sb_secret_…`) is only used in
+`/api/stripe/webhook` (no user session) and in code paths that explicitly need to
+bypass RLS for system writes. The browser only ever sees the publishable key.
 
 ## AI design — prompt caching
 
@@ -99,7 +100,7 @@ re-prompt that includes the error.
 ## Security
 
 - RLS on every user table (owner-only).
-- Service role key never reaches the browser; only used in `/api/stripe/webhook`.
+- Supabase secret key never reaches the browser; only used in `/api/stripe/webhook`.
 - Stripe webhook always verifies signature.
 - File uploads validated server-side: ≤10 MB, mime-type allowlist (CSV/XLSX).
 - Anthropic API key only on the server.

@@ -4,6 +4,11 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
 
 ## Unreleased
 
+- Switched Supabase auth to the new API key model: `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+  → `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (`sb_publishable_…`) and
+  `SUPABASE_SERVICE_ROLE_KEY` → `SUPABASE_SECRET_KEY` (`sb_secret_…`). Updated
+  `lib/env.ts`, `lib/supabase/{client,server}.ts`, `proxy.ts`, `.env.example`,
+  `SETUP.md`, and architecture/CLAUDE wording to match.
 - Initial scaffold with pinned dependency versions:
   - `next@16.2.4`, `react@19.2.5`, `react-dom@19.2.5`
   - `typescript@6.0.3`, `@types/node@25.6.0`, `@types/react@19.2.14`,
