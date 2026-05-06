@@ -351,7 +351,10 @@ authorization_url_path = "/oauth/consent"
 allow_dynamic_registration = false
 
 [edge_runtime]
-enabled = true
+# Disabled — TrustReply does not use Edge Functions, and the runtime mounts
+# the host docker socket which Colima's VM cannot reach. Re-enable if you
+# add Edge Functions and switch to Docker Desktop.
+enabled = false
 # Supported request policies: `oneshot`, `per_worker`.
 # `per_worker` (default) — enables hot reload during local development.
 # `oneshot` — fallback mode if hot reload causes issues (e.g. in large repos or with symlinks).
@@ -365,7 +368,11 @@ deno_version = 2
 # secret_key = "env(SECRET_VALUE)"
 
 [analytics]
-enabled = true
+# Disabled — analytics/Vector mount the host docker socket, which Colima
+# (used here as the Docker runtime) cannot expose inside its VM, causing
+# "operation not supported" on mkdir of the socket path. Re-enable if you
+# switch to Docker Desktop or need log analytics locally.
+enabled = false
 port = 54327
 # Configure one of the supported backends: `postgres`, `bigquery`.
 backend = "postgres"

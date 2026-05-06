@@ -4,6 +4,13 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
 
 ## Unreleased
 
+- Fix: disabled `analytics` and `edge_runtime` in `supabase/config.toml` so
+  `supabase start` works under Colima. Both services bind-mount the host
+  docker socket, which Colima's Linux VM cannot reach (it surfaces as
+  `mkdir <socket-path>: operation not supported`). Neither is needed by
+  TrustReply; re-enable in the config if you add Edge Functions or run on
+  Docker Desktop.
+
 - Dev workflow: `pnpm dev` now chains `supabase start && next dev`, so a single
   command boots the DB + auth + Studio + mail-catcher stack and the Next
   server. `supabase start` is idempotent so the boot cost is ~2s when the

@@ -10,7 +10,11 @@ Supabase (DB + auth), Anthropic (drafts), Stripe (billing), and optionally Resen
 
 - Node 22 LTS (`node --version`)
 - pnpm (`corepack enable && corepack prepare pnpm@latest --activate`)
-- Docker (Docker Desktop or OrbStack) — required for local Supabase
+- Docker (Docker Desktop, OrbStack, or Colima) — required for local Supabase.
+  Colima works with the default config in this repo because `analytics` and
+  `edge_runtime` are disabled in `supabase/config.toml` (they bind-mount the
+  host docker socket, which Colima's VM cannot reach). Re-enable them in
+  `supabase/config.toml` if you switch to Docker Desktop and need them.
 - Supabase CLI (`brew install supabase/tap/supabase` or
   https://supabase.com/docs/guides/cli)
 - Stripe CLI (`brew install stripe/stripe-cli/stripe` or
