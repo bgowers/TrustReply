@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  /* Existing tokens — preserved */
   --color-bg: #ffffff;
   --color-fg: #0b1220;
   --color-muted: #475569;
@@ -14,11 +15,38 @@
   --color-warning: #b45309;
   --color-danger: #b91c1c;
 
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol";
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+  /* Brand depth — used for hero / security / final CTA bands and the login backdrop */
+  --color-ink: #050816;
+  --color-ink-2: #0a0f24;
+  --color-ink-fg: #e6e8ef;
+  --color-ink-muted: #8c93a8;
+  --color-ink-border: rgba(255, 255, 255, 0.08);
+
+  /* Aurora gradient stops */
+  --aurora-1: #4f46e5;
+  --aurora-2: #7c3aed;
+  --aurora-3: #06b6d4;
+  --aurora-4: #0ea5e9;
+
+  /* Font families — Geist (next/font) with the existing system stack as fallback */
+  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* CSS-level vars (kept outside @theme so they don't generate utility classes) */
+:root {
+  --surface-glass: rgba(255, 255, 255, 0.66);
+  --surface-glass-dark: rgba(8, 10, 22, 0.55);
+  --surface-elev-1: 0 1px 0 rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --surface-elev-2: 0 1px 0 rgba(15, 23, 42, 0.04), 0 8px 24px -8px rgba(15, 23, 42, 0.12);
+  --surface-elev-3: 0 1px 0 rgba(15, 23, 42, 0.06), 0 24px 48px -16px rgba(15, 23, 42, 0.18);
+  --accent-gradient: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%);
+  --accent-gradient-hover: linear-gradient(180deg, #5b56f0 0%, #4338ca 100%);
+  --grid-line: rgba(15, 23, 42, 0.06);
+  --grid-line-dark: rgba(255, 255, 255, 0.06);
 }
 
 @layer base {
@@ -39,12 +67,282 @@
     outline-offset: 2px;
     border-radius: 4px;
   }
+
+  /* Defensive: if Lenis fails to mount, native smooth-scroll is still on.
+   * scroll-padding-top keeps anchored headings clear of the fixed site header. */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+  }
+
+  /* Lenis smooth scroll integration — body/html bypass when active */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
       animation-duration: 0.001ms !important;
       transition-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+    }
+    html {
+      scroll-behavior: auto;
     }
   }
+}
+
+@layer utilities {
+  /* Glass surfaces */
+  .surface-glass {
+    background: var(--surface-glass);
+    backdrop-filter: saturate(140%) blur(12px);
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
+  }
+  .surface-glass-dark {
+    background: var(--surface-glass-dark);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+  }
+
+  .shadow-elev-1 {
+    box-shadow: var(--surface-elev-1);
+  }
+  .shadow-elev-2 {
+    box-shadow: var(--surface-elev-2);
+  }
+  .shadow-elev-3 {
+    box-shadow: var(--surface-elev-3);
+  }
+
+  /* Decorative grid — fades to transparent at edges via radial mask */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    -webkit-mask-image: radial-gradient(
+      ellipse at center,
+      black 50%,
+      transparent 80%
+    );
+    mask-image: radial-gradient(ellipse at center, black 50%, transparent 80%);
+  }
+  .bg-grid-dark {
+    background-image:
+      linear-gradient(to right, var(--grid-line-dark) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line-dark) 1px, transparent 1px);
+    background-size: 32px 32px;
+    -webkit-mask-image: radial-gradient(
+      ellipse at center,
+      black 40%,
+      transparent 75%
+    );
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+  }
+
+  /* Subtle film noise — inline SVG, mix-blend overlay */
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+  }
+
+  /* Animated underline for nav links — scaleX from left on hover */
+  .nav-underline {
+    position: relative;
+  }
+  .nav-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .nav-underline:hover::after,
+  .nav-underline[data-active="true"]::after {
+    transform: scaleX(1);
+  }
+
+  /* Tabular numerals helper (used for live counters / pricing) */
+  .nums {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+}
+
+/* Eyebrow type — uppercase mono with wide tracking */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Display / heading scale used on the marketing surface only */
+.t-display {
+  font-size: clamp(48px, 6vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+.t-h1 {
+  font-size: clamp(40px, 4.5vw, 56px);
+  line-height: 1.07;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+.t-h2 {
+  font-size: clamp(28px, 3vw, 36px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+.t-h3 {
+  font-size: 22px;
+  line-height: 1.27;
+  font-weight: 600;
+}
+.t-lead {
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* Marketing keyframes — declared at root so Tailwind can pick them up via animate-* */
+@keyframes aurora-drift-1 {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(2%, 1%, 0) rotate(8deg);
+  }
+}
+@keyframes aurora-drift-2 {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-2%, -1%, 0) rotate(-6deg);
+  }
+}
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.4);
+  }
+}
+@keyframes shimmer-slide {
+  0% {
+    transform: translateX(-120%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(220%) skewX(-12deg);
+  }
+}
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+@keyframes scan-line {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+@keyframes shake-x {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-2px);
+  }
+  40%,
+  80% {
+    transform: translateX(2px);
+  }
+}
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Drop cap — opt-in via .with-drop-cap. Applied to first <p> in the first <section>. */
+.legal-prose.with-drop-cap > section:first-of-type p:first-of-type::first-letter {
+  float: left;
+  font-family: var(--font-sans);
+  font-size: 4.5rem;
+  line-height: 0.85;
+  padding: 0.4rem 0.6rem 0 0;
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* Section heads inside legal prose */
+.legal-prose section h2 {
+  color: var(--color-fg);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+/* Anchor offset — keep the section heading clear of the fixed header. */
+.legal-prose section[id] {
+  scroll-margin-top: 96px;
+}
+.legal-prose a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal-prose a:hover {
+  color: var(--color-accent-hover);
 }

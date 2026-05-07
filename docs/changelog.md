@@ -4,6 +4,46 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
 
 ## Unreleased
 
+- Marketing redesign + design foundations (PR 1 of a 3-PR sweep). Replaces the
+  restrained slate-on-white v0 marketing surface with an editorial,
+  motion-rich identity:
+  - Adds Geist Sans + Geist Mono via `next/font`, an extended palette
+    (`--color-ink*`, `--aurora-1..4`, `--surface-elev-{1,2,3}`,
+    `--surface-glass[-dark]`), and utility classes `.surface-glass`,
+    `.bg-grid[-dark]`, `.bg-noise`, plus marketing keyframes.
+  - Adds motion primitives under `components/motion/*` —
+    `SmoothScrollProvider` (Lenis), `FadeIn`, `Parallax`, `Reveal` (word-by-word
+    H1 stagger), `Magnetic`, `Tilt`, `Marquee`, `ScrollProgress`. Each respects
+    `prefers-reduced-motion`.
+  - Upgrades `components/ui/{button,input,textarea}.tsx` additively — new
+    `shimmer` and `ink` button variants, `lg` size, `magnetic` and `loading`
+    props; `floating` + `tone="ink"` on input; refined focus rings.
+  - Rebuilds the landing page (`app/(marketing)/page.tsx`) into eight
+    sections — hero with parallaxed live-questionnaire mock and dark band,
+    logo marquee, sticky scroll-pinned how-it-works (3 frames cross-fade
+    between CSV row → policy snippet → cited answer), real-DOM product
+    visual with scanning highlight, tilt-card pricing, dark
+    security/credibility band with 6 stat tiles, FAQ with motion accordion,
+    dark final CTA.
+  - Site header is now sticky with a transparent → frosted-glass scroll
+    transition driven by Motion's `useScroll`, animated nav-link
+    underlines, magnetic "Start free" CTA, and a full-screen mobile
+    overlay menu with stagger-animated links.
+  - Site footer is rebuilt into a 4-column layout with a gradient hairline
+    and a breathing-dot "All systems normal" indicator.
+  - Legal pages adopt a new `<LegalShell>` (2-col with sticky TOC,
+    breadcrumb, scroll-progress bar). Terms additionally gets a drop-cap
+    on the first paragraph.
+  - Login page rewritten with an aurora-mesh ink backdrop, glass-on-ink
+    card, floating-label input, and `AnimatePresence` state transitions
+    between idle / sending / sent / error (with a small shake on error).
+    Supabase auth call unchanged.
+  - Adds `motion@12.18.0`, `lenis@1.3.10`, `react-wrap-balancer@1.1.1`,
+    `geist@1.4.2` (all pinned exact). Net ~25 kB gzip on the marketing
+    bundle. No app-bundle impact.
+  - Rewrites `CLAUDE.md` § 2 ("Design and UX") to reflect the new marketing
+    motion budget vs the still-restrained app surface.
+
 - Fix: clicking Edit on a freshly-drafted answer no longer renders an empty
   textarea on first click. The `Row` component initialised its local `draft`
   state from props on mount, so rows that were `pending` at page load and got

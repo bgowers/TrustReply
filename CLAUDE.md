@@ -32,21 +32,48 @@ SETUP.md             One-time external setup walkthrough (Supabase, Stripe, Anth
 
 ## 2. Design and UX
 
-- **Palette**: neutral, serious. Slate/zinc grays, single accent (indigo-600). No
-  gradients, neon, or playful illustrations — this is a security product sold to
-  security buyers.
-- **Type**: system font stack (`-apple-system, BlinkMacSystemFont, "Segoe UI", ...`).
-  No custom web fonts in v1.
-- **Components**: hand-rolled minimal components in `components/ui/` styled with
-  Tailwind v4 + `class-variance-authority`. Accessible by default (focus rings always
-  visible; semantic HTML; labelled inputs).
-- **Accessibility**: WCAG 2.1 AA contrast minimum. Never communicate state with color
-  alone (always pair with text or icon). Keyboard navigable; visible focus.
-- **Motion**: minimal. No animated heroes, no parallax. Honor
-  `prefers-reduced-motion`.
-- **Copy tone**: calm, technical, specific. Say "Generates draft answers from your
-  policies", not "Supercharge your security workflows!". No exclamation marks in app
-  surfaces.
+The frontend is split into two surfaces with deliberately different motion budgets:
+
+- **Marketing** (`/`, `/legal/*`, `/login`): editorial, motion-rich, anchored by
+  three deep-navy "ink" bands (hero, security/credibility, final CTA) against an
+  otherwise light surface. Aurora gradient mesh + subtle film noise + decorative grid
+  on dark moments only. Smooth scroll site-wide via Lenis. Scroll-driven entrances
+  (fade + parallax), magnetic CTA buttons, scroll-pinned how-it-works, hover-tilt
+  pricing cards. Every motion respects `prefers-reduced-motion`.
+- **App** (`/app/*`): Linear-fast and dense. Native scroll, no Lenis. Transitions
+  150–220ms, never longer. CSS keyframes + Radix data-state animations only — no
+  Motion/framer-motion bundle inside `/app/*`.
+
+**Palette tokens** live in `app/globals.css` under `@theme`. Existing slate/zinc
+neutrals + indigo accent are preserved for back-compat. Added: `--color-ink*` for
+dark bands, `--aurora-1..4` for the gradient stops, `--surface-glass[-dark]` and
+`--surface-elev-{1,2,3}` for layered surfaces. Use these — do not hand-roll new
+gradients per-component.
+
+**Type**: Geist Sans + Geist Mono via `next/font` (loaded once in `app/layout.tsx`).
+Marketing uses an editorial scale exposed as `.t-display`, `.t-h1`, `.t-h2`, `.t-h3`,
+`.t-lead`. Mono eyebrow (`12/16` uppercase tracked at `0.16em`) lives on `.eyebrow`.
+No more "no custom fonts" rule.
+
+**Components**: `components/ui/*` upgraded but API-compatible — every existing
+caller still works. Marketing primitives live under `components/marketing/*` and
+motion primitives under `components/motion/*` (`SmoothScrollProvider`, `FadeIn`,
+`Parallax`, `Reveal`, `Magnetic`, `Tilt`, `Marquee`, `ScrollProgress`).
+
+**Accessibility**: WCAG 2.1 AA contrast still holds. Never communicate state with
+color alone — always pair with text or icon. Keyboard navigable; visible focus.
+Aurora and animated decoration are `aria-hidden` and `pointer-events: none`.
+
+**Motion**: gradients and animation are now intentional, but always anchored to a
+security-product reading. No candy-colored hero soup, no chaotic interleaved
+parallax. Three rules: (1) every animation honors `prefers-reduced-motion`,
+typically by routing through `motion/react`'s `useReducedMotion()` or the global
+CSS rule that nullifies durations; (2) marketing motion is expressive; app motion
+is fast and snappy; (3) one well-orchestrated moment beats many noisy ones.
+
+**Copy tone**: calm, technical, specific. Say "Generates draft answers from your
+policies", not "Supercharge your security workflows!". No exclamation marks in app
+surfaces.
 
 ## 3. Constraints
 
