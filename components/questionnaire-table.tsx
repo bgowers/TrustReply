@@ -206,7 +206,7 @@ export function QuestionnaireTable({
 
 function Row({ q, onPatch }: { q: Question; onPatch: (q: Question, patch: { final_answer?: string; status?: Question["status"] }) => void }) {
   const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState(q.final_answer ?? q.draft_answer ?? "");
+  const [draft, setDraft] = useState("");
 
   const answer = q.final_answer ?? q.draft_answer ?? "";
   const confidenceClass =
@@ -269,7 +269,10 @@ function Row({ q, onPatch }: { q: Question; onPatch: (q: Question, patch: { fina
             {answer && (
               <button
                 type="button"
-                onClick={() => setEditing(true)}
+                onClick={() => {
+                  setDraft(answer);
+                  setEditing(true);
+                }}
                 className="text-xs text-[color:var(--color-accent)] underline"
               >
                 Edit
