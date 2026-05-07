@@ -4,6 +4,12 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
 
 ## Unreleased
 
+- Fix: clicking Edit on a freshly-drafted answer no longer renders an empty
+  textarea on first click. The `Row` component initialised its local `draft`
+  state from props on mount, so rows that were `pending` at page load and got
+  populated via the SSE stream kept `draft = ""` after the prop changed. We
+  now seed `draft` from the current answer at the moment the user enters
+  edit mode.
 - Workflow: rewrote `CLAUDE.md` § 6 ("Working on this project") around an
   explicit **Definition of done** checklist. A change isn't done until
   static checks pass, UI changes are driven in a real browser via the

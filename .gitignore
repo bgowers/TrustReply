@@ -28,3 +28,6 @@ Thumbs.db
 *.log
 *.tsbuildinfo
 next-env.d.ts
+
+# playwright mcp scratch (snapshots, console logs from browser_snapshot etc.)
+.playwright-mcp/
