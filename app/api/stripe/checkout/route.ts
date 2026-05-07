@@ -33,8 +33,8 @@ export async function POST(request: Request) {
     customer: profile?.stripe_customer_id ?? undefined,
     customer_email: profile?.stripe_customer_id ? undefined : user.email,
     client_reference_id: user.id,
-    success_url: `${env.appUrl}/app?upgraded=1`,
-    cancel_url: `${env.appUrl}/app?canceled=1`,
+    success_url: `${env.appUrl}/app/billing?upgraded=1`,
+    cancel_url: `${env.appUrl}/app/billing?canceled=1`,
     allow_promotion_codes: true,
     subscription_data: { metadata: { user_id: user.id } },
   });

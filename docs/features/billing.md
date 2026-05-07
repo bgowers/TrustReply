@@ -29,8 +29,20 @@ enforcement read from there.
 ## Paywall
 
 `POST /api/questionnaires` and the draft endpoint check `lib/plans.ts` limits. If
-exceeded, return `402 Payment Required` with `{ upgrade_url }`. UI shows an upgrade
-modal that opens Checkout.
+exceeded, return `402 Payment Required`. The upload UI shows an inline callout
+linking to `/app/billing`, where the user can start Checkout for Solo/Team.
+
+## Billing page
+
+`/app/billing` is the single place inside the dashboard to change subscription
+state. It shows the current plan (with renewal date for paid plans), an
+**Upgrade to Solo / Team** button that POSTs to `/api/stripe/checkout` and
+redirects to the returned Stripe URL, and a **Manage billing** button (visible
+once `stripe_customer_id` is set) that opens the Customer Portal. The header
+nav and the plan-name badge both link here.
+
+Stripe redirects back to `/app/billing?upgraded=1` on success and
+`?canceled=1` on cancel; the page renders a small banner for each.
 
 ## Local dev
 

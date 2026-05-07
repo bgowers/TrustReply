@@ -4,6 +4,19 @@ Reverse-chronological. One bullet per user-visible or developer-visible change.
 
 ## Unreleased
 
+- Workflow: rewrote `CLAUDE.md` § 6 ("Working on this project") around an
+  explicit **Definition of done** checklist. A change isn't done until
+  static checks pass, UI changes are driven in a real browser via the
+  Playwright MCP tools, and the relevant docs are updated *in the same
+  change* (changelog, feature doc, architecture, deploy, SETUP, or
+  project_status as applicable). Reporting "done" should state what was
+  actually validated, not just that typecheck passed.
+- Billing: added `/app/billing` — current plan, upgrade buttons that POST to
+  `/api/stripe/checkout`, and a Manage Billing button (Customer Portal) for
+  subscribers. Linked from the dashboard header (the plan badge now navigates
+  there too) and from the paywall callout in the questionnaire upload, which
+  previously dead-ended on the marketing pricing section. Buttons surface
+  Stripe errors inline (e.g. missing price IDs) so smoke tests fail loudly.
 - Marketing: refactored `app/page.tsx` into an `app/(marketing)/` route group
   with extracted `<SiteHeader />` and `<SiteFooter />` components. Header/
   footer now wrap every public page (landing + legal). The dashboard

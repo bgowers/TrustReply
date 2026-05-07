@@ -25,9 +25,16 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             <Link href="/app/policies" className="text-[color:var(--color-muted)] hover:text-[color:var(--color-fg)]">
               Policies
             </Link>
-            <span className="rounded-full border px-2 py-0.5 text-xs uppercase tracking-wide text-[color:var(--color-muted)]">
+            <Link href="/app/billing" className="text-[color:var(--color-muted)] hover:text-[color:var(--color-fg)]">
+              Billing
+            </Link>
+            <Link
+              href="/app/billing"
+              className="rounded-full border px-2 py-0.5 text-xs uppercase tracking-wide text-[color:var(--color-muted)] hover:text-[color:var(--color-fg)]"
+              aria-label={`Plan: ${plan}. Manage billing.`}
+            >
               {plan}
-            </span>
+            </Link>
             <span className="hidden text-[color:var(--color-muted)] sm:inline">{user.email}</span>
             <SignOutButton />
           </nav>

@@ -107,10 +107,47 @@ External dev tools (run outside pnpm):
 
 For humans or agents picking this up:
 
+### Before you start
+
 1. Read `spec.md` first, then `docs/architecture.md`.
 2. Skim `docs/project_status.md` to see what's done vs. todo.
 3. Run the smoke test in `docs/architecture.md` before changing anything.
-4. When finishing a milestone, update `docs/project_status.md`.
-5. Every user-visible change gets a one-line entry in `docs/changelog.md`.
-6. New features get a doc in `docs/features/<name>.md` linked from
-   `docs/features/README.md`.
+
+### Definition of done
+
+A change isn't done until **all** of the following are true. Do them in order;
+don't skip steps to save time.
+
+1. **Code passes static checks.** `pnpm typecheck && pnpm lint && pnpm test`
+   all green. CI runs the same on every PR — keep it green locally first.
+2. **UI changes are validated in a real browser.** Type checks and unit tests
+   verify code correctness, not feature correctness. For anything that touches
+   `app/**/*.tsx`, `components/**`, CSS, or layouts:
+   - Boot the dev server (`pnpm dev`, or `pnpm dev:app` if Supabase is already
+     up).
+   - Drive the affected route(s) using the Playwright MCP browser tools
+     (`browser_navigate`, `browser_click`, `browser_fill_form`,
+     `browser_snapshot`, `browser_console_messages`). Exercise the golden path
+     plus at least one edge case.
+   - If the page can't be reached locally (auth wall, missing env vars, etc.),
+     say so explicitly rather than skipping validation silently.
+3. **Docs are updated alongside the code, in the same change.** Doc updates
+   are part of the work, not a separate cleanup pass:
+   - Every user-visible or developer-visible change → one bullet in
+     `docs/changelog.md` under `## Unreleased`.
+   - New feature → a doc in `docs/features/<name>.md`, linked from
+     `docs/features/README.md`.
+   - Existing feature changed → update the relevant `docs/features/*.md`.
+   - Architectural shift (data model, request flow, security boundary) →
+     update `docs/architecture.md`.
+   - Operational shift (env vars, deploy steps, smoke test) → update
+     `docs/deploy.md` or `SETUP.md`.
+   - Workflow / etiquette shift → update this file (`CLAUDE.md`).
+   - Milestone or follow-up resolved → update `docs/project_status.md`.
+4. **Summarize what changed and what was validated.** When reporting done,
+   state the validation that actually happened (e.g. "loaded
+   `/app/billing` in a browser, clicked Upgrade to Solo, saw the Stripe
+   redirect"), not just "typecheck passes".
+
+If a step doesn't apply (e.g. a server-only refactor with no UI surface, no
+docs implication), state that explicitly rather than silently skipping.
