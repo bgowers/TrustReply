@@ -68,9 +68,11 @@
     border-radius: 4px;
   }
 
-  /* Defensive: if Lenis fails to mount, native smooth-scroll is still on. */
+  /* Defensive: if Lenis fails to mount, native smooth-scroll is still on.
+   * scroll-padding-top keeps anchored headings clear of the fixed site header. */
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 96px;
   }
 
   /* Lenis smooth scroll integration — body/html bypass when active */
@@ -331,6 +333,10 @@
   font-weight: 600;
   letter-spacing: -0.01em;
   margin-bottom: 8px;
+}
+/* Anchor offset — keep the section heading clear of the fixed header. */
+.legal-prose section[id] {
+  scroll-margin-top: 96px;
 }
 .legal-prose a {
   color: var(--color-accent);

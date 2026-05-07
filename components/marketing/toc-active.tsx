@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
+import { useLenis } from "lenis/react";
 
 type Section = { id: string; label: string };
 
 export function TocActive({ sections }: { sections: Section[] }) {
+  const lenis = useLenis();
   const [activeId, setActiveId] = useState<string | null>(sections[0]?.id ?? null);
 
   useEffect(() => {
@@ -31,12 +33,22 @@ export function TocActive({ sections }: { sections: Section[] }) {
     return () => observer.disconnect();
   }, [sections]);
 
+  function handleClick(e: MouseEvent<HTMLAnchorElement>, id: string) {
+    if (!lenis) return; // fall back to native anchor + scroll-padding-top
+    e.preventDefault();
+    lenis.scrollTo(`#${id}`, { offset: -96 });
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", `#${id}`);
+    }
+  }
+
   return (
     <ol className="space-y-2 text-[13px]">
       {sections.map((s, i) => (
         <li key={s.id}>
           <a
             href={`#${s.id}`}
+            onClick={(e) => handleClick(e, s.id)}
             className={`group flex items-baseline gap-2 transition-colors duration-150 ${
               activeId === s.id
                 ? "text-[color:var(--color-accent)]"
